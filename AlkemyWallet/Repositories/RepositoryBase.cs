@@ -1,72 +1,59 @@
 ﻿using AlkemyWallet.Repositories.Interfaces;
 using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
-using EntityState = Microsoft.EntityFrameworkCore.EntityState;
+using LinqKit.Core;
 
 namespace AlkemyWallet.Repositories
 {
     public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
 
-        private readonly WalletDbContext dbContext;
+        protected readonly WalletDbContext _context;
 
-        public RepositoryBase(WalletDbContext dbContext)
+        public RepositoryBase(WalletDbContext context)
         {
-            this.dbContext = dbContext;
+            _context = context;
         }
 
 
         /// <summary>
         /// Esta clase implementa un CRUD básico para cualquier entidad de Entity Framework
 
-        public async Task Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             var entity = await GetById(id);
-            if(entity==null)
+
+            if (entity != null)
             {
-                throw new Exception("The entity is null");
-            }          
-                dbContext.Set<T>().Remove(entity);
-                await dbContext.SaveChangesAsync();    
-            
-        }
-
-        public async Task<IEnumerable<T>> GetAll()
-        {
-            return await dbContext.Set<T>().ToListAsync();
-        }
-
-        public async Task<T> GetById(int id)
-        {
-            
-            var result = await dbContext.Set<T>().FindAsync(id);
-            if (result==null)
-            {
-                throw new Exception("The entity is null");
-            }else
-            return result;
-        }
-
-        public async Task<T> Insert(T entity)
-        {
-            dbContext.Set<T>().Add(entity);
-            await dbContext.SaveChangesAsync();
-            return entity;
-        }
-
-
-        public async Task<T> Update(T entity)
-        {
-
-            var currentState = dbContext.Entry(entity).State;
-            if (currentState == EntityState.Unchanged)
-            {
-                dbContext.Entry(entity).State = EntityState.Modified;
-                await dbContext.SaveChangesAsync();
+                _context.Set<T>().Remove(entity);
+                int rowsAffected = await _context.SaveChangesAsync();
+                return rowsAffected > 0;
             }
-            
-            return entity;
-           
+            return false;
+
+        }
+
+      public async Task<IEnumerable<T>> GetAll() => await _context.Set<T>().ToListAsync();
+   
+      
+
+        public async Task<T?> GetById(int id) => await _context.Set<T>().FindAsync(id);      
+
+        public async Task Insert(T entity)
+        {
+            _context.Set<T>().Add(entity);
+            await _context.SaveChangesAsync();          
+        }
+
+
+        public async Task<bool> Update(T entity)
+        {
+
+            _context.Update(entity);
+            var rowsAffected = await _context.SaveChangesAsync();
+            return rowsAffected > 0;                  
+
         }
     }
 }
+

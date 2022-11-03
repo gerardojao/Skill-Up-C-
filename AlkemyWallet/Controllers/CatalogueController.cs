@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
+
 namespace AlkemyWallet.Controllers
 {
     [ApiController]
@@ -28,7 +29,7 @@ namespace AlkemyWallet.Controllers
             var catalogues = await _catalogueService.GetCatalogues();        
 
             
-            return Ok();
+            return Ok(catalogues);
         }
 
         [HttpGet("{id}")]
@@ -41,7 +42,7 @@ namespace AlkemyWallet.Controllers
                 return NotFound("No existe ningún catalogo con el id especificado");
             }
 
-            return Ok();
+            return Ok(catalogue);
         }
     }
 }

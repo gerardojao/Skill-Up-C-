@@ -22,7 +22,7 @@ namespace AlkemyWallet.Core.Services
 
         public async Task<IEnumerable<Catalogue>> GetCatalogues()
         {
-            var catalogues = await _repo.GetAll();
+            var catalogues =   _repo.GetAllCatalogues();
             catalogues = catalogues.OrderBy(x => x.Points);
             return catalogues;
         }

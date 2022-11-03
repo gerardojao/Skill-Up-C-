@@ -11,7 +11,7 @@ namespace AlkemyWallet.Repositories
 
         }
 
-
+        public IEnumerable<Catalogue> GetAllCatalogues() => _context.Catalogues.AsEnumerable();
     }
 }
 
