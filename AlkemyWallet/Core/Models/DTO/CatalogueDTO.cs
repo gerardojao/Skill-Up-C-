@@ -14,12 +14,14 @@ namespace AlkemyWallet.Core.Models
 
     public class CatalogueForCreationDTO
     {
-        [Required(ErrorMessage = "El producto es requerido")]
-        [StringLength(100, MinimumLength = 2)]
-        public string Product_description { get; set; }        
-        [Required(ErrorMessage = "La Imagen es requerida")]
+        [MaxLength(100)]
+        [MinLength(2)]        
+        [Required(ErrorMessage = "Product name or description is required")]       
+        public string Product_description { get; set; }      
+       
+        [Required(ErrorMessage = "A Valid Image is Required,The Name its too Long or the File its Too Big")]
         public IFormFile ImageFile { get; set; }
-        [Required(ErrorMessage = "Los puntos son un campo requerido.")]
+        [Required(ErrorMessage = "The Amount of Points are Required")]
         [Range(0, 9999)]
         public int Points { get; set; }
     }
@@ -29,7 +31,7 @@ namespace AlkemyWallet.Core.Models
         
         [StringLength(100, MinimumLength = 2)]
         public string? Product_description { get; set; }        
-        public IFormFile? ImageFile { get; set; }     
+        public IFormFile? ImageFile { get; set; }
         [Range(0, 9999)]
         public int? Points { get; set; }
     }
