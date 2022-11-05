@@ -31,6 +31,28 @@ namespace AlkemyWallet.Core.Services
             var account = await _unitOfWork.AccountRepository.GetById(id);
             return account;
         }
+        public async Task<bool> Deposit(int id, int amount)
+        {
+            if (amount > 0)
+            { 
+                var accountEntity = await _unitOfWork.AccountRepository.GetById(id);
+                if (accountEntity is null)
+                    return false;
+                accountEntity.Money += amount;
+                var transactionsEntity = new Transaction
+                {
+                    Amount = amount,
+                    Date = DateTime.Now,
+                    Concept = "deposit",
+                    Type = "topup",
+                    Account_id = id,
+                    User_id = 
+                };
+                // var transactionsEntity = await _unitOfWork.TransactionRepository.Insert(id);
+                return await _unitOfWork.AccountRepository.Update(accountEntity);                
+            }
+            return false;
 
+        }
     }
 }

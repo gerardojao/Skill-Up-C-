@@ -53,5 +53,15 @@ namespace AlkemyWallet.Controllers
             return Ok(" transaccion exitosa");
 
         }
+
+        //[Authorize]
+        [HttpPost("{id}/deposit")]
+        public async Task<ActionResult> PostDeposit(int id, int amount)
+        {
+
+            await _accountsService.Deposit(id, amount);
+            return Ok(" transaccion exitosa");
+
+        }
     }
 }

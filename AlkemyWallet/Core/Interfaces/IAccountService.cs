@@ -7,5 +7,6 @@ namespace AlkemyWallet.Core.Interfaces
     {
         Task<IEnumerable<Account>> GetAccounts();
         Task<Account> GetAccountById(int id);
+        Task<bool> Deposit(int id, int amount);
     }
 }
