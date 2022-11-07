@@ -64,8 +64,9 @@ namespace AlkemyWallet.Controllers
 
             var result = await _accountsService.Deposit(id, amount);
             if(result.Success)
-                return Ok(" transaccion exitosa");
-            return BadRequest("El importe ingresado no es correcto debe ser mayor a 0");
+                return Ok(result.Message);
+
+            return BadRequest(result.Message);
 
 
         }
@@ -79,8 +80,8 @@ namespace AlkemyWallet.Controllers
 
             var result = await _accountsService.Transfer(id, amount, toAccountId);
             if (result.Success)
-                return Ok(" transaccion exitosa");
-            return BadRequest("El importe ingresado no es correcto debe ser mayor a 0");
+                return Ok(result.Message);
+            return BadRequest(result.Message);
 
 
         }

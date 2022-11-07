@@ -92,7 +92,23 @@ public class DbInitializer
                     Money = 50,
                     IsBlocked = true,
                     User_id = 1,
-                }
+                },
+                  new Account
+                  {
+                      Id = 3,
+                      CreationDate = new DateTime(1995, 11, 19),
+                      Money = 35000,
+                      IsBlocked = false,
+                      User_id = 3,
+                  },
+                  new Account
+                  {
+                      Id = 4,
+                      CreationDate = new DateTime(1995, 11, 19),
+                      Money = 5000,
+                      IsBlocked = false,
+                      User_id = 3,
+                  }
               );
         });
 

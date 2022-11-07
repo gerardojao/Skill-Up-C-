@@ -66,15 +66,19 @@ namespace AlkemyWallet.Core.Services
                 await _unitOfWork.AccountRepository.Update(account);
                 return (true, "Transferencia exitosa.");
             }
-            return (false, "El importe ingresado debe ser mayor a 0");
-            
+            else
+            {
+                return (false, "El importe ingresado debe ser mayor a 0");
+            }
 
         }
 
         public async Task <(bool Success, string Message)> Transfer(int id, int amount, int toAccountId)
         {
-            
-           //traigo el usuario que transfiere el dinero
+            if (amount > 0)
+            {
+                
+                //traigo el usuario que transfiere el dinero
                 var account = await _unitOfWork.AccountWithDetails.GetByIdWithDetail(id);
 
                 if (account is null)
@@ -116,9 +120,13 @@ namespace AlkemyWallet.Core.Services
 
             return (true, "Transferencia exitosa.");
 
-
-
         }
+            else
+            {
+                return (false, "El importe ingresado debe ser mayor a 0");
+            }
+
+}
 
     }
 }
