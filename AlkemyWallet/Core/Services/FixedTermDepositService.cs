@@ -25,5 +25,17 @@ namespace AlkemyWallet.Core.Services
             return fixedTermDeposits;
         }
 
+        //Get FixedTermDeposit by id from authorized user
+        public async Task<FixedTermDeposit> GetFixedTermDepositById(int id, int userId)
+        {
+            var fixedTermDeposit = await _unitOfWork.FixedTermDepositDetailsRepository!.GetById(id, userId);
+            if (fixedTermDeposit == null) throw new Exception("FixedTermDeposit not found");  
+            return fixedTermDeposit;
+        }
+        //POST FixedTermDeposit
+        public async Task<bool> InsertFixedTermDeposit(FixedTermDeposit fixedTermDeposit)
+        {
+            return false;
+        }
     }
 }

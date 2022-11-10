@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 using NuGet.Packaging.Licenses;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using AlkemyWallet.Core.Models;
+using AlkemyWallet.Entities;
 
 namespace AlkemyWallet.Controllers
 {
@@ -31,7 +33,7 @@ namespace AlkemyWallet.Controllers
             return Ok(fixedTerm);
         }
 
-        //Get All FixedTermDeposits from authorized a user
+        //Get All FixedTermDeposits from authorized user
         [Authorize(Roles = "Standard")]
         [HttpGet]
         public async Task<IActionResult> GetFixedTermDeposits()
@@ -42,5 +44,26 @@ namespace AlkemyWallet.Controllers
             return Ok(fixedTerm);
         }
 
+        //Get FixedTermDeposit by id from authorized user
+        [Authorize(Roles = "Standard")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetFixedTermDepositById(int id)
+        {
+            //get id from jwt token
+            int userId = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("uid"))!.Value);
+            var fixedTerm = await _fixedTermDeposit.GetFixedTermDepositById(id, userId);
+            return Ok(fixedTerm);
+        }
+        //Post FixedTermDeposit from authorized user
+        [Authorize(Roles = "Standard")]
+        [HttpPost]
+        public async Task<IActionResult> PostFixedTermDeposit([FromForm] POSTFixedTermDepositDTO fixedTermDeposit)
+        {
+            //get id from jwt token
+            int userId = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("uid"))!.Value);
+            
+            //var fixedTerm = await _fixedTermDeposit.PostFixedTermDeposit(fixedTermDepositDTO, userId);
+            return Ok(fixedTermDeposit);
+        }
     }
 }
